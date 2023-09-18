@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
                 String itemname = line[0];
                 String price = line[1];
 
-                // Rest of your processing
             } else {
                 Log.e("CSV", "Invalid data in CSV line: " + Arrays.toString(line));
             }
@@ -83,7 +82,11 @@ public class MainActivity extends AppCompatActivity {
         }
         return csvLines;
     }
+    private double calculateprice(String price, double quantity) {
+        double pricePerKilogram = Double.parseDouble(price);
 
+        return (pricePerKilogram * quantity)/1000.0;
+    }
     private void performSearch(String searchItem) {
         searchResultsList.clear();
 
@@ -92,31 +95,35 @@ public class MainActivity extends AppCompatActivity {
         for (String[] line : csvData) {
             String itemname = line[0];
             String price = line[1];
-
-            if (itemname.toLowerCase().contains(searchItem)) {
-                double price_100gm = calculateprice(price, 100);
-                double price_125gm = calculateprice(price, 125);
-                double price_250gm = calculateprice(price, 250);
-                double price_500gm = calculateprice(price, 500);
-
-                searchResultsList.add(new String[] {
-                        itemname,
-                        String.valueOf(price_100gm),
-                        String.valueOf(price_125gm),
-                        String.valueOf(price_250gm),
-                        String.valueOf(price_500gm)
-                });
+            try {
+                double priceperKg = Double.parseDouble(price);
+                Log.d("csv", "itemname: " + itemname + ",price per KG:" + priceperKg);
+                if (itemname.toLowerCase().contains(searchItem)) {
+                    double price_1KG = calculateprice(price, 1000.0);
+                    double price_100gm = calculateprice(price, 100.0);
+                    double price_125gm = calculateprice(price, 125.0);
+                    double price_250gm = calculateprice(price, 250.0);
+                    double price_500gm = calculateprice(price, 500.0);
+                    Log.d(price, "100gm: "+price_100gm);
+                    Log.d(price, "125gm: "+price_125gm);
+                    Log.d(price, "250gm: "+price_250gm);
+                    Log.d(price, "500gm: "+price_500gm);
+                    searchResultsList.add(new String[]{
+                            itemname,
+                            String.format("%.2f", price_1KG),
+                            String.format("%.2f", price_100gm),
+                            String.format("%.2f", price_125gm),
+                            String.format("%.2f", price_250gm),
+                            String.format("%.2f", price_500gm)
+                    });
+                }
+            } catch (NumberFormatException e) {
+                Log.e("CSV", "Error in parsing price" + price);
             }
         }
-        searchResultsAdapter.notifyDataSetChanged();
+            searchResultsAdapter.notifyDataSetChanged();
     }
 
-
-    private  double calculateprice(String price,int quantity){
-        double priceperkg=Double.parseDouble(price);
-        return (priceperkg/1000)*quantity;
-
-    }
     private class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdapter.ViewHolder> {
 
         private List<String[]> searchResults;
@@ -136,43 +143,44 @@ public class MainActivity extends AppCompatActivity {
         public void onBindViewHolder(ViewHolder holder, int position) {
             String[] result = searchResults.get(position);
             String itemname = result[0];
-            String price100 = result[1];
-            String price125 = result[2];
-            String price250 = result[3];
-            String price500 = result[4];
+            String price1=result[1];
+            String price100 = result[2];
+            String price125 = result[3];
+            String price250 = result[4];
+            String price500 = result[5];
 
-            // Calculate prices and format them with two decimal places
-            double price100Value = calculateprice(price100, 100);
-            double price125Value = calculateprice(price125, 125);
-            double price250Value = calculateprice(price250, 250);
-            double price500Value = calculateprice(price500, 500);
-
-            // Format the calculated prices
-            String formattedPrice100 = String.format("%f", price100Value);
-            String formattedPrice125 = String.format("%f", price125Value);
-            String formattedPrice250 = String.format("%f", price250Value);
-            String formattedPrice500 = String.format("%f", price500Value);
-
-            String resultText = "Item: " + itemname + "\n" +
-                    "Price for 100g:" + formattedPrice100 + "\n" +
-                    "Price for 125g:" + formattedPrice125 + "\n" +
-                    "Price for 250g:" + formattedPrice250 + "\n" +
-                    "Price for 500g:" + formattedPrice500;
-
-            holder.textViewItem.setText(resultText);
+            holder.textViewItem.setText("Item:" + itemname);
+            holder.itemViewprice1.setText("Price for 1kg:" + price1);
+            holder.itemViewprice100.setText("Price for 100g:" + price100);
+            holder.itemViewprice125.setText("Price for 125g:" + price125);
+            holder.itemViewprice250.setText("Price for 250g:" + price250);
+            holder.itemViewprice500.setText("Price for 500g:" + price500);
         }
 
         @Override
         public int getItemCount() {
+
             return searchResults.size();
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             TextView textViewItem;
+            TextView itemViewprice1;
+            TextView itemViewprice100;
+            TextView itemViewprice125;
+            TextView itemViewprice250;
+            TextView itemViewprice500;
+
 
             public ViewHolder(View itemView) {
                 super(itemView);
                 textViewItem = itemView.findViewById(R.id.textViewItem);
+                itemViewprice1=itemView.findViewById(R.id.itemViewprice1);
+                itemViewprice100=itemView.findViewById(R.id.itemViewprice100);
+                itemViewprice125=itemView.findViewById(R.id.itemViewprice125);
+                itemViewprice250=itemView.findViewById(R.id.itemViewprice250);
+                itemViewprice500=itemView.findViewById(R.id.itemViewprice500);
+
             }
         }
     }
