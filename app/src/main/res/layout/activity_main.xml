@@ -5,51 +5,53 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:backgroundTintMode="screen"
+    android:background="@drawable/img_1"
+    android:alpha="0.9"
     tools:context=".MainActivity">
 
-    <TextView
+    <Button
+        android:id="@+id/buttonGetPrices"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/button_border"
         android:text="Get Prices"
-        app:layout_constraintBottom_toTopOf="@+id/editTextSearch"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.476"
+        android:textSize="20sp"
+        app:cornerRadius="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonBilling"
+        app:layout_constraintHorizontal_bias="0.372"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.637" />
-
-    <EditText
-        android:id="@+id/editTextSearch"
-        android:layout_width="310dp"
-        android:layout_height="49dp"
-        android:hint="Enter Item to search"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerViewSearchResults"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.584"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.562" />
+        app:layout_constraintVertical_bias="0.549" />
 
     <Button
-        android:id="@+id/buttonSearch"
+        android:id="@+id/buttonBilling"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Search"
+        android:background="@drawable/button_border"
+        android:text="Billing"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:cornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.869"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerViewSearchResults"
-        app:layout_constraintVertical_bias="0.525" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.549" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewSearchResults"
-        android:layout_width="321dp"
-        android:layout_height="243dp"
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:circularflow_radiusInDP="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.201"
+        app:srcCompat="@drawable/img" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
